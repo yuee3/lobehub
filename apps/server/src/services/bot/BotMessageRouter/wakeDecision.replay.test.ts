@@ -151,7 +151,7 @@ describe('bot-wake recorder: the replay of a parked message', () => {
   it('runs on the wake decided when it was parked instead of judging again (the reported case)', async () => {
     const classify = vi
       .fn<WakeClassify>()
-      .mockResolvedValueOnce({ addressedToBot: 0.51, kind: 'request', reason: 'p=0.51' })
+      .mockResolvedValueOnce({ addressedToBot: 0.78, kind: 'request', reason: 'p=0.78' })
       .mockResolvedValueOnce({ addressedToBot: 0.13, kind: 'chitchat', reason: 'p=0.13' });
     const state = fakeState(spokeRecently());
     const recorder = make(ENFORCE, state, { classify });
@@ -169,7 +169,7 @@ describe('bot-wake recorder: the replay of a parked message', () => {
     await flush();
     expect(
       recorded()[0].verdicts.map((v: any) => [v.policyId, v.verdict, v.confidence]),
-    ).toContainEqual(['bot-wake:classifier', 'allow', 0.51]);
+    ).toContainEqual(['bot-wake:classifier', 'allow', 0.78]);
   });
 
   it('judges again when nothing was kept, or what was kept cannot be read', async () => {

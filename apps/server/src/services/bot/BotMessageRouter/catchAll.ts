@@ -289,6 +289,7 @@ export const registerCatchAllHandler = (bot: Chat<any>, ctx: BotHandlerContext):
           reactionMode,
           replyLocale,
           duty: initiation?.reason === 'in-duty' ? { matched: initiation.duty } : undefined,
+          followupWindow: wakeReason === 'followup-window',
           named: wakeReason === 'named-in-text',
           wakeKind,
         });

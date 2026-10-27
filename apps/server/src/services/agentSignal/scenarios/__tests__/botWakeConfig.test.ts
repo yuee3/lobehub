@@ -512,6 +512,23 @@ describe('flattenBotWakeSettings', () => {
     }
   });
 
+  // A balanced bot saved when the default was 0.5 woke on "yep" and "我试试" in the follow-up
+  // window: the form saves the threshold, so a preset pace has to override it.
+  it('runs a preset pace on its own classifier threshold, and a custom one on the saved one', () => {
+    const K = BOT_WAKE_SETTING_KEYS;
+    const saved = { [K.enabled]: true, [K.classifierThreshold]: 0.5 };
+
+    for (const pace of ['calm', 'balanced', 'active']) {
+      expect(parseBotWakeSettings({ ...saved, [K.pace]: pace }).rules.classifier.threshold).toBe(
+        0.75,
+      );
+    }
+    expect(parseBotWakeSettings({ ...saved, [K.pace]: 'custom' }).rules.classifier.threshold).toBe(
+      0.5,
+    );
+    expect(parseBotWakeSettings({ [K.enabled]: true }).rules.classifier.threshold).toBe(0.75);
+  });
+
   it('keeps the migrated row reading the same as the nested one', () => {
     const nested = {
       botWake: {

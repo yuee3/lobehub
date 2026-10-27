@@ -14,6 +14,8 @@ export interface BotPlatformContext {
   currentChannel?: BotPlatformInfo['currentChannel'];
   /** The bot woke on its own because a message falls within its duties (see `formatBotPlatformContext`). */
   duty?: BotPlatformInfo['duty'];
+  /** The bot woke only because it spoke lately in this thread (see `formatBotPlatformContext`). */
+  followupWindow?: boolean;
   /** The bot woke only because its name is in the text (see `formatBotPlatformContext`). */
   named?: boolean;
   /** Acknowledgement already posted before the run (see `formatBotPlatformContext`). */

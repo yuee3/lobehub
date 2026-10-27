@@ -57,6 +57,12 @@ export interface BotPlatformInfo {
    */
   duty?: { matched?: string };
   /**
+   * The bot woke only because it replied in this thread lately and the classifier read the next
+   * message as possibly meant for it (a `followup` wake). Most such messages are people talking to
+   * each other, so the agent is told to stay silent unless the message clearly needs it.
+   */
+  followupWindow?: boolean;
+  /**
    * The bot woke only because its name is in the text, with no @-mention or reply (a `followup`
    * wake). The agent is told people often talk about it rather than to it.
    */
@@ -100,6 +106,7 @@ export const formatBotPlatformContext = ({
   canReadHistory = true,
   currentChannel,
   duty,
+  followupWindow,
   named,
   openingReply,
   platformName,
@@ -200,6 +207,11 @@ export const formatBotPlatformContext = ({
       `If you have nothing worth adding — the message is not for you, is off topic, repeats something already answered, or was already handled — end your turn with exactly \`${BOT_NO_REPLY_TOKEN}\` and no other text.`,
       `You may append a reason: \`${BOT_NO_REPLY_TOKEN}:<reason>\`, where reason is one of ${BOT_NO_REPLY_REASONS.filter((r) => r !== 'empty_completion').join(', ')}.`,
       'Stay silent rather than posting filler. If you do have something useful to say, just reply normally.',
+      ...(followupWindow
+        ? [
+            `Why you were woken: you replied in this thread a moment ago, and this message came after it. Nobody @-mentioned you or replied to you. Most messages here are people talking to each other: acknowledging you ("ok", "yep", "thanks"), reacting, trying something out, or carrying on their own discussion. Default to silence, and when unsure, stay silent: end with \`${BOT_NO_REPLY_TOKEN}:not_addressed\`. Reply only when the message clearly asks you to do or answer something, or corrects or questions what you just said. When someone is unhappy with something you did, do respond: acknowledge it plainly, without defending yourself, and say what you will do differently.`,
+          ]
+        : []),
       ...(named
         ? [
             `Why you were woken: your name appears in the message, but nobody @-mentioned you or replied to you. People often talk about you rather than to you: commenting on what you did, joking, or asking each other why you spoke up. Decide the way a teammate in the room would: speak when the message asks you to do or answer something, or when you have something the conversation actually needs; let a passing remark or a joke about you go by and end with \`${BOT_NO_REPLY_TOKEN}:not_addressed\`. When someone is unhappy with something you did (you replied when you should not have, got it wrong, were too noisy), do respond: acknowledge it plainly, without defending yourself, and save what you will do differently as <self_improvement> describes.`,

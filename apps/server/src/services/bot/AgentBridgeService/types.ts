@@ -35,6 +35,12 @@ export interface BridgeHandlerOpts {
    */
   duty?: { matched?: string };
   /**
+   * The bot woke only because it spoke lately in this thread (a `followup` wake): most such
+   * messages are people talking to each other, and the agent is told so. See
+   * `formatBotPlatformContext`.
+   */
+  followupWindow?: boolean;
+  /**
    * The bot woke only because its name is in the text (a `followup` wake): people often talk about
    * it rather than to it, and the agent is told so. See `formatBotPlatformContext`.
    */

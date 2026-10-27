@@ -5,7 +5,7 @@ import type { BotWakeConfig, WakePolicyMode, WakeRules, WakeSchedulerConfig } fr
 
 export const DEFAULT_WAKE_RULES: WakeRules = {
   allowChannels: [],
-  classifier: { mode: 'enforce', threshold: 0.5 },
+  classifier: { mode: 'enforce', threshold: 0.75 },
   denyChannels: [],
   // Off until the bot has duties: without the text there is nothing to judge a message against.
   duties: { mode: 'enforce', threshold: 0.8 },
@@ -24,6 +24,8 @@ export const BOT_WAKE_PACES = ['calm', 'balanced', 'active', 'custom'] as const;
 export type BotWakePace = (typeof BOT_WAKE_PACES)[number];
 
 export interface BotWakePacePreset {
+  /** Score the classifier must reach for a message in the follow-up window to wake the bot. */
+  classifierThreshold: number;
   maxSilentWakes: number;
   ownerPresenceSeconds: number;
   scheduler: Required<WakeSchedulerConfig>;
@@ -33,18 +35,21 @@ export interface BotWakePacePreset {
 /** `balanced` is the defaults, so a bot that never touched the numbers keeps behaving the same. */
 export const BOT_WAKE_PACE_PRESETS: Record<Exclude<BotWakePace, 'custom'>, BotWakePacePreset> = {
   active: {
+    classifierThreshold: 0.75,
     maxSilentWakes: 5,
     ownerPresenceSeconds: 0,
     scheduler: { collectSeconds: 20, cooldownSeconds: 60, mode: 'off' },
     windowSeconds: 600,
   },
   balanced: {
+    classifierThreshold: 0.75,
     maxSilentWakes: 3,
     ownerPresenceSeconds: 120,
     scheduler: { collectSeconds: 20, cooldownSeconds: 60, mode: 'off' },
     windowSeconds: 300,
   },
   calm: {
+    classifierThreshold: 0.75,
     maxSilentWakes: 1,
     ownerPresenceSeconds: 300,
     scheduler: { collectSeconds: 30, cooldownSeconds: 180, mode: 'enforce' },
@@ -447,7 +452,8 @@ export const parseBotWakeSettings = (
   const parsed = SettingsSchema.safeParse(gatherBotWakeSettings(settings));
   const raw = parsed.success ? parsed.data : {};
 
-  // A pace other than `custom` sets the timings; the numbers saved beside it are not read.
+  // A pace other than `custom` sets the timings and the classifier threshold; the numbers saved
+  // beside it are not read.
   const preset = raw.pace && raw.pace !== 'custom' ? BOT_WAKE_PACE_PRESETS[raw.pace] : undefined;
 
   const rules: WakeRules = {
@@ -458,7 +464,13 @@ export const parseBotWakeSettings = (
       ownerPresenceSeconds: preset.ownerPresenceSeconds,
       windowSeconds: preset.windowSeconds,
     }),
-    classifier: { ...DEFAULT_WAKE_RULES.classifier, ...raw.classifier },
+    // The form always saves the threshold, so a preset must override it like the timings: a
+    // `balanced` bot saved when the default was 0.5 would otherwise keep waking on idle chatter.
+    classifier: {
+      ...DEFAULT_WAKE_RULES.classifier,
+      ...raw.classifier,
+      ...(preset && { threshold: preset.classifierThreshold }),
+    },
     // Switched off, the text stays in the settings but is not handed to the classifier.
     customInstructions:
       raw.customInstructionsEnabled === false
