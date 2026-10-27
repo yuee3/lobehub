@@ -110,6 +110,8 @@ export function registerHandlers(
    * can drive a specific directive ("scan the recent thread for a bug
    * report", "summarise the last 20 messages", …).
    */
+  const wakeSettings = parseBotWakeSettings(info.settings);
+  const botWakeEnabled = isBotWakeEnabled(wakeSettings.config);
   const watchKeywordEntries = extractWatchKeywordEntries(info.settings);
   const watchKeywords: ReadonlyArray<string> = watchKeywordEntries.map((e) => e.keyword);
   /**
@@ -425,6 +427,17 @@ export function registerHandlers(
     return { openingReply: opening.openingReply, release: opening.release };
   };
 
+  /**
+   * Whether the agent may step back from a conversation when people say it is interfering. Only
+   * where it changes something: a stand-down is enforced by the owner rules, in a group
+   * conversation, once the rollout reaches the bot's owner.
+   */
+  const canStandDown = async (thread: { isDM?: boolean }) =>
+    botWakeEnabled &&
+    wakeSettings.ruleMode === 'enforce' &&
+    !thread.isDM &&
+    (await wakeRecorder.isRolledOut());
+
   const gateFollowup = createFollowupGate({
     applicationId,
     observe: observe as FollowupGateDeps['observe'],
@@ -540,6 +553,7 @@ export function registerHandlers(
         openingReply,
         reactionMode,
         replyLocale,
+        standDown: await canStandDown(thread),
       });
     } catch (error) {
       const operationId = AgentBridgeService.getActiveOperationId(thread.id);
@@ -845,6 +859,7 @@ export function registerHandlers(
         openingReply,
         reactionMode,
         replyLocale,
+        standDown: await canStandDown(thread),
         wakeKind,
       });
     } catch (error) {
@@ -882,8 +897,9 @@ export function registerHandlers(
   registerCatchAllHandler(bot, {
     agentId,
     applicationId,
-    botWakeEnabled: isBotWakeEnabled(parseBotWakeSettings(info.settings).config),
+    botWakeEnabled,
     bridge,
+    canStandDown,
     charLimit,
     client,
     commands,

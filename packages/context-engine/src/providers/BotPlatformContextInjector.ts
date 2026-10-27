@@ -23,6 +23,8 @@ export interface BotPlatformContext {
   platformName: string;
   /** Pre-injected recent same-channel history for platforms without history-read. */
   recentChannelHistory?: BotPlatformInfo['recentChannelHistory'];
+  /** The agent may step back from the conversation (see `formatBotPlatformContext`). */
+  standDown?: boolean;
   supportsMarkdown: boolean;
   /** `followup` tells the agent it may stay silent (see `formatBotPlatformContext`). */
   wakeKind?: BotPlatformInfo['wakeKind'];

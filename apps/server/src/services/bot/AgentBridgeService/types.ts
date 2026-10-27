@@ -62,6 +62,12 @@ export interface BridgeHandlerOpts {
    */
   replyLocale?: BotReplyLocale;
   /**
+   * The agent may step back from this conversation (`STAND_DOWN`) when people say it is
+   * interfering: a group conversation of a bot whose wake rules enforce. See
+   * `formatBotPlatformContext`.
+   */
+  standDown?: boolean;
+  /**
    * How the bot was woken. `followup` lets the agent end in silence and holds back every visible
    * side effect (reaction, typing, progress message) until it decides to speak; `mention`
    * (the default) is the always-answer path and is unchanged.

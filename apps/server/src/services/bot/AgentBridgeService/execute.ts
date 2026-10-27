@@ -69,6 +69,8 @@ export async function executeWithCallback(
     openingReply?: string;
     reactionMode?: BotReactionMode;
     replyLocale: BotReplyLocale;
+    /** The agent may step back from this conversation; documented in its prompt. */
+    standDown?: boolean;
     topicId?: string;
     trigger?: string;
     /** `followup` holds visible feedback back until the agent starts acting. Default `mention`. */
@@ -303,6 +305,7 @@ export async function executeWithCallback(
     if (opts.named) botPlatformContext.named = true;
   }
   if (opts.openingReply && botPlatformContext) botPlatformContext.openingReply = opts.openingReply;
+  if (opts.standDown && botPlatformContext) botPlatformContext.standDown = true;
 
   // Attach file warnings to botPlatformContext for injection via context engine
   if (fileWarnings?.length && botPlatformContext) {
