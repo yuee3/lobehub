@@ -109,6 +109,8 @@
   "connector.disconnect": "Trennen",
   "connector.edit": "Bearbeiten",
   "connector.edit.success": "Connector aktualisiert",
+  "connector.error.network": "Die Netzwerkverbindung wurde unterbrochen. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+  "connector.error.stdioDesktopOnly": "Stdio-Connectoren können nur in der Desktop-App synchronisiert werden. Öffnen Sie LobeHub Desktop, um diesen Connector zu synchronisieren.",
   "connector.manageOnlyCreator": "Nur der Ersteller oder ein Arbeitsbereichsbesitzer kann diesen Connector verwalten",
   "connector.noTools": "Keine Tool-Berechtigungen zu konfigurieren.",
   "connector.notConnected": "Nicht verbunden",

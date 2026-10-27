@@ -109,6 +109,8 @@
   "connector.disconnect": "Desconectar",
   "connector.edit": "Editar",
   "connector.edit.success": "Conector atualizado",
+  "connector.error.network": "A conexão de rede foi interrompida. Verifique sua conexão e tente novamente.",
+  "connector.error.stdioDesktopOnly": "Conectores Stdio só podem sincronizar no aplicativo de desktop. Abra o LobeHub Desktop para sincronizar este conector.",
   "connector.manageOnlyCreator": "Somente o criador ou um proprietário do espaço de trabalho pode gerenciar este conector",
   "connector.noTools": "Sem permissões de ferramentas para configurar.",
   "connector.notConnected": "Não conectado",

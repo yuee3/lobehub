@@ -109,6 +109,8 @@
   "connector.disconnect": "قطع الاتصال",
   "connector.edit": "تعديل",
   "connector.edit.success": "تم تحديث الموصل",
+  "connector.error.network": "تم قطع اتصال الشبكة. تحقق من اتصالك وحاول مرة أخرى.",
+  "connector.error.stdioDesktopOnly": "يمكن للمواصلات Stdio المزامنة فقط في تطبيق سطح المكتب. افتح LobeHub Desktop لمزامنة هذا الموصل.",
   "connector.manageOnlyCreator": "يمكن فقط للمنشئ أو مالك مساحة العمل إدارة هذا الموصل",
   "connector.noTools": "لا توجد أذونات أدوات لتكوينها.",
   "connector.notConnected": "غير متصل",

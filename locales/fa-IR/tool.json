@@ -109,6 +109,8 @@
   "connector.disconnect": "قطع اتصال",
   "connector.edit": "ویرایش",
   "connector.edit.success": "کانکتور به‌روزرسانی شد",
+  "connector.error.network": "اتصال شبکه قطع شد. اتصال خود را بررسی کنید و دوباره تلاش کنید.",
+  "connector.error.stdioDesktopOnly": "اتصال‌دهنده‌های Stdio فقط در برنامه دسکتاپ می‌توانند همگام‌سازی شوند. برنامه LobeHub Desktop را باز کنید تا این اتصال‌دهنده همگام‌سازی شود.",
   "connector.manageOnlyCreator": "تنها سازنده یا مالک فضای کاری می‌تواند این اتصال‌دهنده را مدیریت کند",
   "connector.noTools": "مجوزی برای پیکربندی ابزارها وجود ندارد.",
   "connector.notConnected": "متصل نیست",

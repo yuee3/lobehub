@@ -109,6 +109,8 @@
   "connector.disconnect": "Verbinding verbreken",
   "connector.edit": "Bewerken",
   "connector.edit.success": "Connector bijgewerkt",
+  "connector.error.network": "De netwerkverbinding werd onderbroken. Controleer uw verbinding en probeer het opnieuw.",
+  "connector.error.stdioDesktopOnly": "Stdio-connectors kunnen alleen synchroniseren in de desktop-app. Open LobeHub Desktop om deze connector te synchroniseren.",
   "connector.manageOnlyCreator": "Alleen de maker of een werkruimte-eigenaar kan deze connector beheren",
   "connector.noTools": "Geen toolmachtigingen om te configureren.",
   "connector.notConnected": "Niet verbonden",

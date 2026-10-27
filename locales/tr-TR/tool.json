@@ -109,6 +109,8 @@
   "connector.disconnect": "Bağlantıyı kes",
   "connector.edit": "Düzenle",
   "connector.edit.success": "Bağlayıcı güncellendi",
+  "connector.error.network": "Ağ bağlantısı kesildi. Bağlantınızı kontrol edin ve tekrar deneyin.",
+  "connector.error.stdioDesktopOnly": "Stdio bağlayıcıları yalnızca masaüstü uygulamasında senkronize edilebilir. Bu bağlayıcıyı senkronize etmek için LobeHub Masaüstü uygulamasını açın.",
   "connector.manageOnlyCreator": "Bu bağlayıcıyı yalnızca oluşturucu veya bir çalışma alanı sahibi yönetebilir",
   "connector.noTools": "Yapılandırılacak araç izni yok.",
   "connector.notConnected": "Bağlı değil",

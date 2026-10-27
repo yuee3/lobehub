@@ -109,6 +109,8 @@
   "connector.disconnect": "Прекъсни връзката",
   "connector.edit": "Редактирай",
   "connector.edit.success": "Конекторът е актуализиран",
+  "connector.error.network": "Мрежовата връзка беше прекъсната. Проверете връзката си и опитайте отново.",
+  "connector.error.stdioDesktopOnly": "Stdio конекторите могат да се синхронизират само в настолното приложение. Отворете LobeHub Desktop, за да синхронизирате този конектор.",
   "connector.manageOnlyCreator": "Само създателят или собственикът на работното пространство може да управлява този конектор",
   "connector.noTools": "Няма разрешения за инструменти за конфигуриране.",
   "connector.notConnected": "Не е свързан",

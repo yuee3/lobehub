@@ -109,6 +109,8 @@
   "connector.disconnect": "切断",
   "connector.edit": "編集",
   "connector.edit.success": "コネクタが更新されました",
+  "connector.error.network": "ネットワーク接続が中断されました。接続を確認して、もう一度お試しください。",
+  "connector.error.stdioDesktopOnly": "Stdioコネクタはデスクトップアプリでのみ同期できます。このコネクタを同期するには、LobeHubデスクトップを開いてください。",
   "connector.manageOnlyCreator": "このコネクタを管理できるのは、作成者またはワークスペースの所有者のみです。",
   "connector.noTools": "構成するツールの権限がありません。",
   "connector.notConnected": "未接続",

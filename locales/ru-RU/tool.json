@@ -109,6 +109,8 @@
   "connector.disconnect": "Отключить",
   "connector.edit": "Редактировать",
   "connector.edit.success": "Коннектор обновлен",
+  "connector.error.network": "Сетевое соединение было прервано. Проверьте подключение и попробуйте снова.",
+  "connector.error.stdioDesktopOnly": "Коннекторы Stdio могут синхронизироваться только в приложении для рабочего стола. Откройте LobeHub Desktop, чтобы синхронизировать этот коннектор.",
   "connector.manageOnlyCreator": "Только создатель или владелец рабочего пространства может управлять этим коннектором",
   "connector.noTools": "Нет разрешений на инструменты для настройки.",
   "connector.notConnected": "Не подключено",
