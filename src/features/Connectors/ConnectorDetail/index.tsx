@@ -1,5 +1,7 @@
 import { getComposioAppByIdentifier, getLobehubSkillProviderById } from '@lobechat/const';
 import { Button, confirmModal, Flexbox, Tabs, Text, toast, Tooltip } from '@lobehub/ui';
+import { cssVar } from '@lobehub/ui/stylex/cssVar.stylex';
+import * as stylex from '@stylexjs/stylex';
 import { PencilIcon, RefreshCwIcon, Trash2 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { memo, useCallback, useState } from 'react';
@@ -15,7 +17,8 @@ import { type ConnectorActionError, toConnectorActionError } from '@/utils/conne
 
 import ConnectorActionErrorText from '../ConnectorActionErrorText';
 import CustomConnectorModal from '../CustomConnectorModal';
-import ConnectorOverviewInfo from './ConnectorOverviewInfo';
+import ConnectorDetailIcon from './ConnectorDetailIcon';
+import ConnectorOverviewInfo, { getConnectorKind } from './ConnectorOverviewInfo';
 import { getLocalizedConnectorDetail } from './localization';
 import ToolPermissionGroup from './ToolPermissionGroup';
 
@@ -52,6 +55,61 @@ const ManageTooltip = ({ children, title }: { children: ReactNode; title?: strin
   );
 
 type ConnectorDetailTab = 'overview' | 'tools';
+
+const styles = stylex.create({
+  body: {
+    flex: '1',
+    minHeight: 0,
+    overflowY: 'auto',
+    paddingBlock: 24,
+    paddingInline: 16,
+  },
+  description: {
+    color: cssVar.colorText,
+    fontSize: 14,
+    lineHeight: 1.6,
+  },
+  header: {
+    flexShrink: 0,
+    paddingBlockStart: '8px',
+    paddingBlockEnd: '16px',
+    paddingInline: 16,
+  },
+  meta: {
+    color: cssVar.colorTextSecondary,
+    fontSize: 13,
+  },
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+  sectionLabel: {
+    color: cssVar.colorTextTertiary,
+    fontSize: 12,
+    fontWeight: 500,
+  },
+  tabs: {
+    borderBlockEndColor: cssVar.colorBorderSecondary,
+    borderBlockEndStyle: 'solid',
+    borderBlockEndWidth: 1,
+    flexShrink: 0,
+    paddingInline: 8,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 600,
+    lineHeight: 1.4,
+    marginBlock: 0,
+  },
+});
+
+const Section = ({ children, label }: { children: ReactNode; label: string }) => (
+  <Flexbox gap={8}>
+    <span {...stylex.props(styles.sectionLabel)}>{label}</span>
+    {children}
+  </Flexbox>
+);
 
 const ConnectorDetail = memo<ConnectorDetailProps>(
   ({ agentTitle, connectorId, lifecycleActions, middleSlot, onDelete }) => {
@@ -344,38 +402,34 @@ const ConnectorDetail = memo<ConnectorDetailProps>(
     );
 
     const overview = (
-      <Flexbox gap={16}>
+      <Flexbox gap={24}>
         {removeError?.connectorId === connectorId && (
           <ConnectorActionErrorText error={removeError.error} name={connectorName} />
         )}
 
         {connectorDescription && (
-          <div
-            style={{
-              color: 'var(--lobe-color-text-secondary)',
-              fontSize: 13,
-              lineHeight: 1.6,
-            }}
-          >
-            {connectorDescription}
-          </div>
+          <Section label={t('connector.overview.about')}>
+            <div {...stylex.props(styles.description)}>{connectorDescription}</div>
+          </Section>
         )}
 
-        <ConnectorOverviewInfo connector={connector} />
+        <Section label={t('connector.overview.connection')}>
+          <ConnectorOverviewInfo connector={connector} />
+          <Flexbox horizontal gap={8} paddingBlock={'4px 0'} wrap={'wrap'}>
+            {actions}
+          </Flexbox>
+        </Section>
 
         {middleSlot}
-
-        <Flexbox horizontal gap={8} wrap={'wrap'}>
-          {actions}
-        </Flexbox>
       </Flexbox>
     );
 
     const tools = hasTools ? (
-      <Flexbox gap={8}>
-        <Flexbox horizontal align={'center'} justify={'space-between'}>
-          <Text fontSize={12} type={'secondary'}>
-            {t('connector.toolCount', { count: toolCount })}
+      <Flexbox gap={16}>
+        <Flexbox horizontal align={'center'} gap={16} justify={'space-between'}>
+          {/* The count already sits under the title; say what the controls decide instead. */}
+          <Text fontSize={13} type={'secondary'}>
+            {t('connector.toolsHint')}
           </Text>
           {/* Reset permissions: restore all tools to auto (fully open) */}
           <ManageTooltip title={manageTooltip}>
@@ -432,32 +486,28 @@ const ConnectorDetail = memo<ConnectorDetailProps>(
     );
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        {/* Header — full-bleed bar with bottom border, aligned with the left pane's header */}
-        <div
-          style={{
-            alignItems: 'center',
-            display: 'flex',
-            flexShrink: 0,
-            gap: 8,
-            height: 42,
-            paddingInline: 16,
-          }}
-        >
-          <div style={{ fontSize: 14, fontWeight: 500 }}>{connectorName}</div>
-        </div>
+      <div {...stylex.props(styles.root)}>
+        <Flexbox horizontal align={'center'} gap={16} {...stylex.props(styles.header)}>
+          <ConnectorDetailIcon connector={connector} />
+          <Flexbox gap={2} style={{ minWidth: 0 }}>
+            <h2 {...stylex.props(styles.title)}>{connectorName}</h2>
+            <Flexbox horizontal align={'center'} gap={6} {...stylex.props(styles.meta)}>
+              <span>{t(`connector.kind.${getConnectorKind(connector)}`)}</span>
+              {hasTools && (
+                <>
+                  <span aria-hidden>·</span>
+                  <span>{t('connector.toolCount', { count: toolCount })}</span>
+                </>
+              )}
+            </Flexbox>
+          </Flexbox>
+        </Flexbox>
 
         {/* Overview (authorization / lifecycle) and Tools (permissions) are two separate jobs */}
-        <div
-          style={{
-            borderBlockEnd: '1px solid var(--lobe-color-border-secondary)',
-            flexShrink: 0,
-            paddingInline: 8,
-          }}
-        >
+        <div {...stylex.props(styles.tabs)}>
           <Tabs
             activeKey={tab}
-            size={'small'}
+            size={'middle'}
             variant={'point'}
             items={[
               { key: 'overview', label: t('connector.tab.overview') },
@@ -480,7 +530,7 @@ const ConnectorDetail = memo<ConnectorDetailProps>(
         </div>
 
         {/* Body */}
-        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: 16 }}>
+        <div {...stylex.props(styles.body)}>
           {tab === 'tools' ? tools : overview}
 
           {/* Edit modal — only http connectors have a server URL to edit */}

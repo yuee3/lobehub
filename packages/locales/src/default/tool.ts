@@ -129,7 +129,9 @@ export default {
   'connector.manageOnlyCreator': 'Only the creator or a workspace owner can manage this connector',
   'connector.noTools': 'No tool permissions to configure.',
   'connector.notConnected': 'Not connected',
+  'connector.overview.about': 'About',
   'connector.overview.authorizedBy': 'Authorized by',
+  'connector.overview.connection': 'Connection',
   'connector.overview.status': 'Status',
   'connector.overview.type': 'Type',
   'connector.permission.approvalAll': 'Needs approval all',
@@ -149,6 +151,8 @@ export default {
   'connector.title': 'Connectors',
   'connector.toolCount_one': '{{count}} tool',
   'connector.toolCount_other': '{{count}} tools',
+  'connector.toolsHint':
+    'Choose for each tool whether the AI calls it directly, asks for approval first, or never sees it.',
   'connector.uninstall': 'Uninstall',
   'connector.uninstallConfirm': 'Uninstall this tool?',
   'connector.updateTools': 'Update tools',

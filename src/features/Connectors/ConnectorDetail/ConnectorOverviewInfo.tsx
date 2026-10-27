@@ -37,7 +37,7 @@ const styles = stylex.create({
 
 type ConnectorKind = 'agent' | 'builtin' | 'community' | 'custom' | 'oauth';
 
-const getConnectorKind = (
+export const getConnectorKind = (
   connector: Pick<ConnectorWithTools, 'agentId' | 'identifier' | 'sourceType'>,
 ): ConnectorKind => {
   if (connector.agentId) return 'agent';
@@ -65,9 +65,9 @@ interface ConnectorOverviewInfoProps {
 }
 
 /**
- * Overview facts of a connector: what kind of object it is, whether it is
- * authorized, and who authorized it. Tool permissions live in
- * the Tools tab, not here.
+ * Overview facts of a connector: whether it is authorized and who authorized
+ * it. The kind of object sits under the page title; tool permissions live in
+ * the Tools tab.
  */
 const ConnectorOverviewInfo = memo<ConnectorOverviewInfoProps>(({ connector }) => {
   const { t } = useTranslation('tool');
@@ -85,9 +85,6 @@ const ConnectorOverviewInfo = memo<ConnectorOverviewInfoProps>(({ connector }) =
 
   return (
     <div {...stylex.props(styles.list)}>
-      <Row label={t('connector.overview.type')}>
-        <Text>{t(`connector.kind.${kind}`)}</Text>
-      </Row>
       <Row label={t('connector.overview.status')}>
         <Tag color={status.color}>{status.label}</Tag>
       </Row>
