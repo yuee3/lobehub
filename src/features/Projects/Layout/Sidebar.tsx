@@ -20,7 +20,7 @@ import { NavPanelPortal } from '@/features/NavPanel/NavPanelPortal';
 import SideBarLayout from '@/features/NavPanel/SideBarLayout';
 import { useWorkspaceAwareNavigate } from '@/features/Workspace/useWorkspaceAwareNavigate';
 import { useActiveRouteParams } from '@/hooks/useActiveRouteParams';
-import { useCurrentProjectDetail, useProjectStore } from '@/store/project';
+import { useCurrentProjectDetail, useProjectByRef, useProjectStore } from '@/store/project';
 
 import { ProjectDirectoryTopics } from '../WorkingDirectories/SidebarTopics';
 import {
@@ -41,6 +41,8 @@ const ProjectSidebarContent = memo(() => {
   const pathname = toProjectPathname(useLocation().pathname);
   const detail = useCurrentProjectDetail(projectId);
   const detailSWR = useProjectStore((s) => s.useFetchProjectDetail)(projectId);
+  // The list row is enough for the header and topics; the detail can come later.
+  const project = useProjectByRef(projectId);
   const { enabled: dashboardEnabled } = useDashboardFeature();
   const projectHomePath = getProjectHomePath(projectId!);
   const projectTasksPath = getProjectTasksPath(projectId!);
@@ -48,7 +50,7 @@ const ProjectSidebarContent = memo(() => {
   const projectAcceptancePath = getProjectAcceptancePath(projectId!);
   const projectDashboardPath = getProjectDashboardPath(projectId!);
 
-  const header = <ProjectHeader project={detail?.project} />;
+  const header = <ProjectHeader project={project} />;
 
   if (detailSWR.error && !detail)
     return (
@@ -103,10 +105,10 @@ const ProjectSidebarContent = memo(() => {
             title={t('topics.settings')}
             onClick={() => navigate(`/project/${projectId}/settings/general`)}
           />
-          {detail?.project && (
+          {project && (
             <ProjectDirectoryTopics
-              coordinatorAgentId={detail.project.coordinatorAgentId}
-              projectId={detail.project.id}
+              coordinatorAgentId={project.coordinatorAgentId}
+              projectId={project.id}
             />
           )}
         </Flexbox>
