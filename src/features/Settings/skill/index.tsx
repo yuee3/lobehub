@@ -222,6 +222,7 @@ export const ToolSettings = memo<ToolSettingsProps>(({ viewMode }) => {
             ) : (
               <LeftPanel
                 fullWidth
+                page
                 viewMode={viewMode}
                 onDeleteSelected={closeStackedDetail}
                 onSelect={handleSelect}
