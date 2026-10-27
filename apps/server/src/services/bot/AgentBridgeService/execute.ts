@@ -61,6 +61,8 @@ export async function executeWithCallback(
     displayToolCalls?: boolean;
     /** The message falls within the bot's duties; told to the agent with a `followup`. */
     duty?: { matched?: string };
+    /** The bot woke in its follow-up window; told to the agent with a `followup`. */
+    followup?: BotPlatformContext['followup'];
     /** The bot woke only because its name is in the text; told to the agent with a `followup`. */
     named?: boolean;
     /** Acknowledgement posted before the run; the agent is told not to repeat it. */
@@ -297,6 +299,7 @@ export async function executeWithCallback(
   if (deferFeedback && botPlatformContext) {
     botPlatformContext.wakeKind = wakeKind;
     if (opts.duty) botPlatformContext.duty = opts.duty;
+    if (opts.followup) botPlatformContext.followup = opts.followup;
     if (opts.named) botPlatformContext.named = true;
   }
   if (opts.openingReply && botPlatformContext) botPlatformContext.openingReply = opts.openingReply;
