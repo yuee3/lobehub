@@ -58,8 +58,8 @@ export interface BotPlatformInfo {
   duty?: { matched?: string };
   /**
    * The bot woke only because it replied in this thread lately and the classifier read the next
-   * message as possibly meant for it (a `followup` wake). Most such messages are people talking to
-   * each other, so the agent is told to stay silent unless the message clearly needs it.
+   * message as possibly meant for it (a `followup` wake). The agent is told to reply only when it
+   * judges the conversation needs a reply from it, and to stay silent when unsure.
    */
   followupWindow?: boolean;
   /**
@@ -209,7 +209,7 @@ export const formatBotPlatformContext = ({
       'Stay silent rather than posting filler. If you do have something useful to say, just reply normally.',
       ...(followupWindow
         ? [
-            `Why you were woken: you replied in this thread a moment ago, and this message came after it. Nobody @-mentioned you or replied to you. Most messages here are people talking to each other: acknowledging you ("ok", "yep", "thanks"), reacting, trying something out, or carrying on their own discussion. Default to silence, and when unsure, stay silent: end with \`${BOT_NO_REPLY_TOKEN}:not_addressed\`. Reply only when the message clearly asks you to do or answer something, or corrects or questions what you just said. When someone is unhappy with something you did, do respond: acknowledge it plainly, without defending yourself, and say what you will do differently.`,
+            `Why you were woken: you replied in this thread a moment ago and this message came after it, but nobody @-mentioned you or replied to you. Being woken is not a request to answer. Judge for yourself, the way a teammate who just spoke would: does this conversation need a reply from you right now? Reply when it does: the message is meant for you, or what you have to say changes something for the people here. Otherwise (it is for someone else, only acknowledges you, or the conversation goes on fine without you) end with \`${BOT_NO_REPLY_TOKEN}:not_addressed\`. When unsure, stay silent. If someone is unhappy with something you did, that is for you: acknowledge it plainly, without defending yourself, and say what you will do differently.`,
           ]
         : []),
       ...(named
