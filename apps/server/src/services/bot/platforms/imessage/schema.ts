@@ -1,6 +1,7 @@
 import { DEFAULT_BOT_DEBOUNCE_MS, MAX_BOT_DEBOUNCE_MS } from '@lobechat/const';
 
 import { displayToolCallsField, makeUserIdField, watchKeywordsField } from '../const';
+import { deviceAccessFields } from '../deviceAccess';
 import type { FieldSchema } from '../types';
 
 export const schema: FieldSchema[] = [
@@ -20,6 +21,7 @@ export const schema: FieldSchema[] = [
     label: 'channel.settings',
     properties: [
       makeUserIdField('imessage'),
+      ...deviceAccessFields,
       {
         key: 'charLimit',
         default: 5000,
